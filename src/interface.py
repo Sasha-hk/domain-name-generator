@@ -16,6 +16,7 @@ class UI:
         self.location = ''
 
     def start(self):
+        self.clear_console()
         self.get_help()
         self.get_location()
 
@@ -103,7 +104,7 @@ class UI:
     def get_help(self):
         """Short info about function"""
         print(
-            'Enter',
+            '\nEnter',
             '\n   x / n - to exit',
             '\n   h     - get help'
             '\n   space - skip doman',

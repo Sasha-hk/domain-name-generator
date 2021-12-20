@@ -1,49 +1,51 @@
 import os
+import sys
 
-from pynput import keyboard
 from termcolor2 import c
 
-from . import check_domain
-from . import generate_domain
+from .check_domain import CheckDomain
+from .generate_domain import generate_domain
 
 
 class UI:
     """Console interface to generate domain"""
-    is_press = False
 
     def __init__(self):
-        with keyboard.Listener(
-            on_press=self.on_press,
-            on_release=self.on_release
-        ) as listener:
+        self.domains = []
+        self.current_domain = ''
+        self.location = ''
+
+    def start(self):
+        self.get_help()
+        self.get_location()
+
+        # generate domain for the first time
+        self.make_domain()
+
+        while True:
+            self.clear_console()
             self.menu_controller()
-            listener.join()
 
-    def on_press(self, key):
+            key = input()
+
+            self.handle_key(key)
+
+    def handle_key(self, key):
         """Handel press key"""
-        if not self.is_press:
-            self.is_press = True
-            try:
-                if key.char == 'x':
-                    exit(0)
+        if key == 'x':
+            self.exit()
 
-                else:
-                    self.menu_controller()
+        elif key == 'a':
+            self.add_domain()
 
-            except AttributeError:
-                if key.name == 'enter':
-                    self.menu_controller()
+        elif key == 's' or key == 'n':
+            self.scip_domain()
 
-                elif key.name == 'space':
-                    self.menu_controller()
+        elif key == 'h':
+            self.get_help()
 
-                elif key.name == 'esc':
-                    exit(0)
-                else:
-                    self.menu_controller()
-
-    def on_release(self, key):
-        self.is_press = False
+    def make_domain(self):
+        self.current_domain = generate_domain(3, 9, self.location)
 
     def menu_controller(self):
         """Controller menu"""
@@ -52,20 +54,64 @@ class UI:
 
     def clear_console(self):
         """Clear console"""
-        os.system('clear')
+        command = 'clear'
+
+        if os.name in ('nt', 'dos'):
+            command = 'cls'
+
+        os.system(command)
 
     def print_menu(self):
-        """Print menu"""
-        print(
-            'Enter',
-            '\n   x     - to exit',
-            '\n   space - skip doman',
-            '\n   enter - add domain'
-        )
-        print(c(' > ').green, end='')
+        if self.domains:
+            print('Selected domains: ')
+            for domain in self.domains:
+                print(f'  {domain}')
+
+        print('\nGenerated domain: ', self.current_domain)
+
+        self.get_input_view()
 
     def add_domain(self):
-        pass
+        self.domains.append(self.current_domain)
+        self.make_domain()
 
     def scip_domain(self):
-        pass
+        self.current_domain = ''
+        self.make_domain()
+
+    def get_location(self):
+        print('\nEnter location, for example .com ')
+
+        self.location = self.not_blank_input()
+
+    def not_blank_input(self):
+        input_value = ''
+
+        while input_value == '':
+            input_value = self.get_input()
+
+        return input_value
+
+    def get_input(self) -> str:
+        x = input(c(' > ').green)
+
+        return x
+
+    def get_input_view(self):
+        print(c(' > ').green, end='')
+
+    def get_help(self):
+        """Short info about function"""
+        print(
+            'Enter',
+            '\n   x / n - to exit',
+            '\n   h     - get help'
+            '\n   space - skip doman',
+            '\n   enter - add domain',
+        )
+
+        input(c('\nPress Enter to start! ').green)
+
+    def exit(self):
+        self.clear_console()
+        exit(0)

@@ -1,5 +1,5 @@
 from random import choice
-from string import ascii_letters
+from string import ascii_lowercase
 
 
 def generate_domain(min: int, max: int, location: str) -> str:

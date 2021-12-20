@@ -3,11 +3,12 @@ import os
 from pynput import keyboard
 from termcolor2 import c
 
-# import check_domain
-# import generate_domain
+from . import check_domain
+from . import generate_domain
 
 
 class UI:
+    """Console interface to generate domain"""
     is_press = False
 
     def __init__(self):
@@ -15,10 +16,11 @@ class UI:
             on_press=self.on_press,
             on_release=self.on_release
         ) as listener:
-            self.clear_console()
+            self.menu_controller()
             listener.join()
 
     def on_press(self, key):
+        """Handel press key"""
         if not self.is_press:
             self.is_press = True
             try:
@@ -26,35 +28,44 @@ class UI:
                     exit(0)
 
                 else:
-                    self.clear_console()
+                    self.menu_controller()
 
             except AttributeError:
-                print(key.name)
                 if key.name == 'enter':
-                    print('enter')
+                    self.menu_controller()
 
                 elif key.name == 'space':
-                    print('space')
+                    self.menu_controller()
 
                 elif key.name == 'esc':
-                    print('Exit')
                     exit(0)
                 else:
-                    self.clear_console()
-
-    def menu_controller(self):
-        pass
+                    self.menu_controller()
 
     def on_release(self, key):
         self.is_press = False
 
+    def menu_controller(self):
+        """Controller menu"""
+        self.clear_console()
+        self.print_menu()
+
     def clear_console(self):
+        """Clear console"""
         os.system('clear')
 
-    def printMenu(self):
+    def print_menu(self):
+        """Print menu"""
         print(
             'Enter',
-            '\n\tx - to exit',
-            '\n\tspace - to skip doman',
-            '\n\tenter - to add domain'
+            '\n   x     - to exit',
+            '\n   space - skip doman',
+            '\n   enter - add domain'
         )
+        print(c(' > ').green, end='')
+
+    def add_domain(self):
+        pass
+
+    def scip_domain(self):
+        pass

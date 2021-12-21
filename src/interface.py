@@ -121,9 +121,7 @@ class UI:
             '\n   x     - to exit',
             '\n   h     - get help',
             '\n   s / n - skip domain',
-            '\n   a     - add domain',
-            '\n   space - skip doman',
-            '\n   enter - add domain',
+            '\n   a     - add domain'
         )
 
         input(c('\nPress Enter to start! ').green)

@@ -14,13 +14,14 @@ class UI:
         self.domains = []
         self.current_domain = ''
         self.location = ''
+        self.min_length = 0
+        self.max_length = 0
 
     def start(self):
         self.clear_console()
         self.get_help()
         self.get_location()
-
-        # generate domain for the first time
+        self.get_domain_length()
         self.make_domain()
 
         while True:
@@ -46,7 +47,11 @@ class UI:
             self.get_help()
 
     def make_domain(self):
-        self.current_domain = generate_domain(3, 9, self.location)
+        self.current_domain = generate_domain(
+            self.min_length,
+            self.max_length,
+            self.location
+        )
 
     def menu_controller(self):
         """Controller menu"""
@@ -68,7 +73,7 @@ class UI:
             for domain in self.domains:
                 print(f'  {domain}')
 
-        print('\nGenerated domain: ', self.current_domain)
+        print('Generated domain: ', self.current_domain)
 
         self.get_input_view()
 
@@ -84,6 +89,13 @@ class UI:
         print('\nEnter location, for example .com ')
 
         self.location = self.not_blank_input()
+
+    def get_domain_length(self):
+        print('\nEnter minimum domain length')
+        self.min_length = int(self.not_blank_input())
+
+        print('\nEnter maximum doman length')
+        self.max_length = int(self.not_blank_input())
 
     def not_blank_input(self):
         input_value = ''
@@ -104,7 +116,7 @@ class UI:
     def get_help(self):
         """Short info about function"""
         print(
-            '\nEnter',
+            'Enter:',
             '\n   x / n - to exit',
             '\n   h     - get help'
             '\n   space - skip doman',

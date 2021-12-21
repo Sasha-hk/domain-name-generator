@@ -1,10 +1,9 @@
 import os
-import sys
 
 from termcolor2 import c
 
-from .check_domain import CheckDomain
 from .generate_domain import generate_domain
+from .file_write import FileWrite
 
 
 class UI:
@@ -16,6 +15,7 @@ class UI:
         self.location = ''
         self.min_length = 0
         self.max_length = 0
+        self.file_write = FileWrite()
 
     def start(self):
         self.clear_console()
@@ -73,15 +73,17 @@ class UI:
             for domain in self.domains:
                 print(f'  {domain}')
 
-        print('Generated domain: ', self.current_domain)
+        print('\nGenerated domain: ', self.current_domain)
 
         self.get_input_view()
 
     def add_domain(self):
+        self.file_write.update_to_selected(self.current_domain)
         self.domains.append(self.current_domain)
         self.make_domain()
 
     def scip_domain(self):
+        self.file_write.update_to_all(self.current_domain)
         self.current_domain = ''
         self.make_domain()
 
@@ -115,12 +117,13 @@ class UI:
 
     def get_help(self):
         """Short info about function"""
+        self.clear_console()
         print(
             'Enter:',
-            '\n   x / n - to exit',
-            '\n   h     - get help'
-            '\n   space - skip doman',
-            '\n   enter - add domain',
+            '\n   x     - to exit',
+            '\n   h     - get help',
+            '\n   s / n - skip domain',
+            '\n   a     - add domain'
         )
 
         input(c('\nPress Enter to start! ').green)

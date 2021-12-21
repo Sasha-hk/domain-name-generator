@@ -115,10 +115,13 @@ class UI:
 
     def get_help(self):
         """Short info about function"""
+        self.clear_console()
         print(
             'Enter:',
-            '\n   x / n - to exit',
-            '\n   h     - get help'
+            '\n   x     - to exit',
+            '\n   h     - get help',
+            '\n   s / n - skip domain',
+            '\n   a     - add domain',
             '\n   space - skip doman',
             '\n   enter - add domain',
         )

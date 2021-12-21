@@ -9,7 +9,7 @@ class CheckDomain:
 
     def check_domain(self, domain_name: str) -> dict:
         domains = requests.get(
-            self.domain_url.replace('<domain_name', domain_name)
+            self.domain_url.replace('<domain_name>', domain_name)
         )
 
         return domains

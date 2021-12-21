@@ -3,6 +3,7 @@ from string import ascii_lowercase
 
 
 def generate_domain(min: int, max: int, location: str) -> str:
+    print(min, max)
     length = choice(range(min, max))
     domain_result = ''
 

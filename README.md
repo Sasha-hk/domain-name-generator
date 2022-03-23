@@ -1,4 +1,4 @@
-# **Domain name generator**
+# ⚙️ Domain name generator
 
 It is a python scrip to help you generate and select cool domains.
 
